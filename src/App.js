@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import LoanForm from "./LoanForm";
 
 
 export default function App() {
@@ -12,20 +13,6 @@ export default function App() {
     <>
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-            </ul>
-          </nav>
-
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
@@ -36,15 +23,11 @@ export default function App() {
               <Users />
             </Route>
             <Route path="/">
-              <Home />
+              <LoanForm />
             </Route>
           </Switch>
         </div>
       </Router>
-
-      <div class="alert alert-primary" role="alert">
-        A simple primary alert—check it out!
-      </div>
     </>
 
 
@@ -53,9 +36,7 @@ export default function App() {
 
 }
 
-function Home() {
-  return <h2>Home</h2>;
-}
+
 
 function About() {
   return <h2>About</h2>;
