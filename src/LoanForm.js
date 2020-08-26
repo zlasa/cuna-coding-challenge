@@ -20,61 +20,79 @@ function LoanForm() {
             creditScore: '',
         }
     });
-    function validateFormData() {
-        let hasErrors=false;
+    function validateAllForm() {
+        let isValid =  validateFormData('purchasePrice', formData.purchasePrice);
+        isValid = validateFormData('make', formData.make) && isValid;
+        isValid = validateFormData('model', formData.model) && isValid;
+        isValid = validateFormData('yearlyIncome', formData.yearlyIncome) && isValid;
+        isValid = validateFormData('creditScore', formData.creditScore) && isValid;
+        return isValid
+    }
+    function validateFormData(name, value) {
+        const currencyRegex=/^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,2})?$/gm;
+        let error='';
         let updatedFormData={ ...formData };
-        if(_.isEmpty(updatedFormData.purchasePrice)) {
-            updatedFormData.errors.purchasePrice=requiredField;
-        }
-        else {
-            updatedFormData.errors.purchasePrice='';
-        }
+        updatedFormData[name]=value
+        switch(name) {
+            case 'purchasePrice': {
+                if(currencyRegex.exec(_.toNumber(value))==null) {
+                    error="Invalid purchase price"
+                }
+                else if(_.isEmpty(value)) {
+                    error=requiredField;
+                }
 
-        if(_.isEmpty(updatedFormData.make)) {
-            updatedFormData.errors.make=requiredField;
-        }
-        else {
-            updatedFormData.errors.make='';
-        }
+                break;
+            }
 
-        if(_.isEmpty(updatedFormData.model)) {
-            updatedFormData.errors.model=requiredField;
-        }
-        else {
-            updatedFormData.errors.model='';
-        }
-        if(_.isEmpty(updatedFormData.yearlyIncome)) {
-            updatedFormData.errors.yearlyIncome=requiredField;
-        }
-        else {
-            updatedFormData.errors.yearlyIncome='';
-        }
+            case 'make': {
+                if(_.isEmpty(value)) {
+                    error=requiredField;
+                }
+                break;
+            }
+            case 'model': {
+                if(_.isEmpty(value)) {
+                    error=requiredField;
+                }
+                break;
+            }
+            case 'yearlyIncome': {
+                if(currencyRegex.exec(_.toNumber(value))==null) {
+                    error="Invalid yearly income"
+                }
+                if(_.isEmpty(value)) {
+                    error=requiredField;
+                }
 
-        if(_.isEmpty(updatedFormData.creditScore)) {
-            updatedFormData.errors.creditScore=requiredField;
-        }
-        else {
-            updatedFormData.errors.creditScore='';
+                break;
+            }
 
+            case 'creditScore': {
+                let cScore=_.toInteger(value);
+                if(_.isEmpty(value)) {
+                    error=requiredField;
+                }
+                else if(cScore>850||cScore<300) {
+                    error='Credit score needs to be between 300-850'
+                }
+                break;
+            }
+            default:
+                break;
         }
-        if(!_.isEmpty(updatedFormData.errors.purchasePrice)||
-            !_.isEmpty(updatedFormData.errors.make)||
-            !_.isEmpty(updatedFormData.errors.model)||
-            !_.isEmpty(updatedFormData.errors.yearlyIncome)||
-            !_.isEmpty(updatedFormData.errors.creditScore)) {
-            hasErrors=true
-        }
+        updatedFormData.errors[name]=error;
         setFormData(updatedFormData);
-        return hasErrors;
+        return error.length === 0;
     }
 
     function handleSubmit(event) {
         event.preventDefault();
-        const hasErrors=validateFormData();
-        if(!hasErrors) {
+        const isValid=validateAllForm();
+        if(isValid) {
             LoanService.process(_.omit(formData, 'errors'))
             .then(() => {
-                history.push('/login')
+                history.push('/create-account')
             })
             .catch(err => {
                 alert(err)
@@ -86,71 +104,8 @@ function LoanForm() {
         }
     }
     function handleChange(event) {
-        const currencyRegex=/^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{1,2})?$/gm;
         const { name, value }=event.target;
-        let updatedFormData={ ...formData };
-        updatedFormData[name]=value
-        switch(name) {
-            case 'purchasePrice': {
-                let error='';
-                ;
-                if(currencyRegex.exec(_.toNumber(value))==null) {
-                    error="Invalid purchase price"
-                }
-                else if(_.isEmpty(value)) {
-                    error=requiredField;
-                }
-
-                updatedFormData.errors[name]=error;
-                break;
-            }
-
-            case 'make': {
-                let error=''
-                if(_.isEmpty(value)) {
-                    error=requiredField;
-                }
-                updatedFormData.errors[name]=error;
-                break;
-            }
-            case 'model': {
-                let error=''
-                if(_.isEmpty(value)) {
-                    error=requiredField;
-                }
-                updatedFormData.errors[name]=error;
-                break;
-            }
-            case 'yearlyIncome': {
-                let error='';
-                if(currencyRegex.exec(_.toNumber(value))==null) {
-                    error="Invalid yearly income"
-                }
-                if(_.isEmpty(value)) {
-                    error=requiredField;
-                }
-
-                updatedFormData.errors[name]=error;
-                break;
-            }
-
-            case 'creditScore': {
-                let error=''
-                let cScore=_.toInteger(value);
-                if(_.isEmpty(value)) {
-                    error=requiredField;
-                }
-                else if(cScore>850||cScore<300) {
-                    error='Credit score needs to be between 300-850'
-                }
-                updatedFormData.errors[name]=error;
-                break;
-            }
-            default:
-                break;
-        }
-
-        setFormData(updatedFormData);
+        validateFormData(name, value);
 
     }
     return (

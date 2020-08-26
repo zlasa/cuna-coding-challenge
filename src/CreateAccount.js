@@ -13,9 +13,13 @@ function CreateAccount() {
             confirmPassword: ''
         }
     });
-    function handleChange(event) {
-        event.preventDefault();
-        const { name, value }=event.target;
+    function validateAllForm() {
+        let isValid = isFormPropertyValid('userName', loginForm.userName);
+        isValid = isFormPropertyValid('password', loginForm.password) && isValid;
+        isValid = isFormPropertyValid('confirmPassword', loginForm.confirmPassword) && isValid;
+        return isValid
+    }
+    function isFormPropertyValid(name, value) {
         let updatedLoginForm={ ...loginForm };
         updatedLoginForm[name] = value;
         let error=''
@@ -24,40 +28,55 @@ function CreateAccount() {
                 if(emailRegex.exec(value)==null) {
                     error='Invalid email address';
                 }
-                updatedLoginForm.errors[name]=error;
                 break;
             }
             case 'password': {
-                if (value.length <=8) 
+                if (value.length <8) 
                 {
                     error='Password must contain 8 or more characters';
                 }
                 else if (loginForm.confirmPassword != value) {
                     error = "Password missmatch";
                 }
-                updatedLoginForm.errors[name]=error;
+                else if (loginForm.confirmPassword === value) {
+                    loginForm.errors.confirmPassword = '';
+                }
                 break;
             }
             case 'confirmPassword': {
-                if (value.length <=8) 
+                if (value.length <8) 
                 {
                     error='Password must contain 8 or more characters';
                 }
                 else if (loginForm.password != value) {
                     error = "Password missmatch";
                 }
-                updatedLoginForm.errors[name]=error;
+                else if (loginForm.password === value) {
+                    loginForm.errors.password = '';
+                }
+                break;
             }
             default:
                 break;
         }
+        updatedLoginForm.errors[name]=error;
         setLoginForm(updatedLoginForm);
+        return error.length === 0;
+    }
+    function handleChange(event) {
+        event.preventDefault();
+        const { name, value }=event.target;
+        isFormPropertyValid(name, value);
     }
     function handleSubmit(event) {
-
+        event.preventDefault();
+        const isValid = validateAllForm();
+        if (isValid) {
+            alert('Your account has been successfully created!')
+        }
     }
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="container">
                 <h1 className="text-center">Create Account</h1>
                 <div className="form-group">
