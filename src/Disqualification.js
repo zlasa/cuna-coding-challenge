@@ -1,6 +1,10 @@
 import React from "react";
-import LoremIpsum from "./LoremIpsum";
+import { useHistory } from "react-router-dom";
 function Disqualification(props) {
+    const history = useHistory();
+    if (props.loanResponse.reason.length == 0) {
+        history.push('/');
+    }
     return (
         <div className="p-5 container">
             <h1 className="text-center pb-1">Disqualification</h1>

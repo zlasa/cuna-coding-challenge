@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { update } from "lodash";
+import { useHistory } from "react-router-dom";
 
-function CreateAccount() {
+function CreateAccount(props) {
+    const history = useHistory();
     const emailRegex=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const [loginForm, setLoginForm]=useState({
         username: '',
@@ -74,6 +76,9 @@ function CreateAccount() {
         if (isValid) {
             alert('Your account has been successfully created!')
         }
+    }
+    if (!props.loanResponse.isQualified) {
+        history.push('/');
     }
     return (
         <form onSubmit={handleSubmit}>

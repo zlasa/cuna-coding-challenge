@@ -19,7 +19,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/create-account">
-              <CreateAccount />
+              <CreateAccount loanResponse={loanResponse}/>
             </Route>
             <Route path="/disqualification">
               <Disqualification loanResponse={loanResponse} />
