@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +10,7 @@ import CreateAccount from "./CreateAccount";
 
 
 export default function App() {
+  const [loanResponse, setLoanResponse] = useState({isQualified: true, reason: ''})
   return (
     <>
       <Router>
@@ -20,11 +21,11 @@ export default function App() {
             <Route path="/create-account">
               <CreateAccount />
             </Route>
-            <Route path="/contact-us">
-              <Disqualification />
+            <Route path="/disqualification">
+              <Disqualification loanResponse={loanResponse} />
             </Route>
             <Route path="/">
-              <LoanForm />
+              <LoanForm setLoanResponse= {setLoanResponse}/>
             </Route>
           </Switch>
         </div>

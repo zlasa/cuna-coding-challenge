@@ -4,7 +4,7 @@ import LoanService from "./LoanService";
 import { useHistory } from "react-router-dom";
 import LoremIpsum from "./LoremIpsum";
 
-function LoanForm() {
+function LoanForm(props) {
     const requiredField='This field is required';
     const history=useHistory();
     const [formData, setFormData]=useState({
@@ -92,8 +92,14 @@ function LoanForm() {
         const isValid=validateAllForm();
         if(isValid) {
             LoanService.process(_.omit(formData, 'errors'))
-                .then(() => {
-                    history.push('/create-account')
+                .then((resp) => {
+                    props.setLoanResponse(resp);
+                    if(resp.isQualified) {
+                        history.push('/create-account')
+                    }
+                    else {
+                        history.push('/disqualification')
+                    }
                 })
                 .catch(() => {
                     // usually we try to avoid using alerts and resort to using modal, popup, slideout
