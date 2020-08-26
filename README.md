@@ -17,6 +17,9 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+Note: I've only added a unit test for the loan service to demonstrate 3 scenarios (i.e loan approve, loan denied, bad request). Ideally, we'd like to have unit tests for all of the components that contain any type of logic
+or rendering conditions, validation etc.
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
