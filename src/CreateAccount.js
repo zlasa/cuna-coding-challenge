@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { update } from "lodash";
 import { useHistory } from "react-router-dom";
 
 function CreateAccount(props) {
     const history = useHistory();
+    //eslint-disable-next-line
     const emailRegex=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const [loginForm, setLoginForm]=useState({
         username: '',
@@ -37,7 +37,7 @@ function CreateAccount(props) {
                 {
                     error='Password must contain 8 or more characters';
                 }
-                else if (loginForm.confirmPassword != value) {
+                else if (loginForm.confirmPassword !== value) {
                     error = "Password missmatch";
                 }
                 else if (loginForm.confirmPassword === value) {
@@ -50,7 +50,7 @@ function CreateAccount(props) {
                 {
                     error='Password must contain 8 or more characters';
                 }
-                else if (loginForm.password != value) {
+                else if (loginForm.password !== value) {
                     error = "Password missmatch";
                 }
                 else if (loginForm.password === value) {

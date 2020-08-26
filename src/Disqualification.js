@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 function Disqualification(props) {
     const history = useHistory();
-    if (props.loanResponse.reason.length == 0) {
+    if (props.loanResponse.reason.length === 0) {
         history.push('/');
     }
     return (
