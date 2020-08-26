@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import * as _ from 'lodash';
 import LoanService from "./LoanService";
 import { useHistory } from "react-router-dom";
+import LoremIpsum from "./LoremIpsum";
 
 function LoanForm() {
     const requiredField='This field is required';
-    const history = useHistory();
+    const history=useHistory();
     const [formData, setFormData]=useState({
         purchasePrice: null,
         make: null,
@@ -21,11 +22,11 @@ function LoanForm() {
         }
     });
     function validateAllForm() {
-        let isValid =  validateFormData('purchasePrice', formData.purchasePrice);
-        isValid = validateFormData('make', formData.make) && isValid;
-        isValid = validateFormData('model', formData.model) && isValid;
-        isValid = validateFormData('yearlyIncome', formData.yearlyIncome) && isValid;
-        isValid = validateFormData('creditScore', formData.creditScore) && isValid;
+        let isValid=validateFormData('purchasePrice', formData.purchasePrice);
+        isValid=validateFormData('make', formData.make)&&isValid;
+        isValid=validateFormData('model', formData.model)&&isValid;
+        isValid=validateFormData('yearlyIncome', formData.yearlyIncome)&&isValid;
+        isValid=validateFormData('creditScore', formData.creditScore)&&isValid;
         return isValid
     }
     function validateFormData(name, value) {
@@ -83,7 +84,7 @@ function LoanForm() {
         }
         updatedFormData.errors[name]=error;
         setFormData(updatedFormData);
-        return error.length === 0;
+        return error.length===0;
     }
 
     function handleSubmit(event) {
@@ -91,12 +92,14 @@ function LoanForm() {
         const isValid=validateAllForm();
         if(isValid) {
             LoanService.process(_.omit(formData, 'errors'))
-            .then(() => {
-                history.push('/create-account')
-            })
-            .catch(err => {
-                alert(err)
-            })
+                .then(() => {
+                    history.push('/create-account')
+                })
+                .catch(() => {
+                    // usually we try to avoid using alerts and resort to using modal, popup, slideout
+                    // to denote 4xx,5xx type of errors.
+                    alert('An error has occurred. Please contact us at 800-888-8888.');
+                });
         }
         else {
 
@@ -170,14 +173,7 @@ function LoanForm() {
                         <button type="submit" className="btn btn-primary float-right">Next</button>
                     </div>
                     <div className="col-md-4">
-                        What is Lorem Ipsum?
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                        It has survived not only five centuries, but also the leap into electronic typesetting,
-                        remaining essentially unchanged. It was popularised in the 1960s with the release of
-                        Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                        software like Aldus PageMaker including versions of Lorem Ipsum.
+                        <LoremIpsum />
                     </div>
 
                 </div>

@@ -5,7 +5,7 @@ import {
   Route
 } from "react-router-dom";
 import LoanForm from "./LoanForm";
-import ContactUs from "./ContactUs";
+import Disqualification from "./Disqualification";
 import CreateAccount from "./CreateAccount";
 
 
@@ -21,7 +21,7 @@ export default function App() {
               <CreateAccount />
             </Route>
             <Route path="/contact-us">
-              <ContactUs />
+              <Disqualification />
             </Route>
             <Route path="/">
               <LoanForm />
