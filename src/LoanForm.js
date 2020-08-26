@@ -8,11 +8,11 @@ function LoanForm(props) {
     const requiredField='This field is required';
     const history=useHistory();
     const [formData, setFormData]=useState({
-        purchasePrice: null,
-        make: null,
-        model: null,
-        yearlyIncome: null,
-        creditScore: null,
+        purchasePrice: '',
+        make: '',
+        model: '',
+        yearlyIncome: '',
+        creditScore: '',
         errors: {
             purchasePrice: '',
             make: '',

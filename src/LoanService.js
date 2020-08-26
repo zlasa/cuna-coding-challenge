@@ -12,7 +12,7 @@ const LoanService={
         const creditScore = _.toNumber(loanForm.creditScore);
 
         if (purchasePrice > 1000000){
-            return Promise.reject();
+            return Promise.reject(LoremIpsumMsg);
         }
         if(purchasePrice > (yearlyIncome/5) || creditScore < 600) {
             mockResponseObject.isQualified=false;
